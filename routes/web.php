@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,7 +9,21 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Auth::routes();
+
+Route::prefix('admin')->group(function () {
+  Route::get('/', function(){
+    return redirect('/admin/dashboard/');
+  })->name('admin.dashboard');
+  Route::get('dashboard', 'AdminController@index')->name('admin.dashboard');
+  Route::get('register', 'AdminController@create')->name('admin.register');
+  Route::post('register', 'AdminController@store')->name('admin.register.store');
+  Route::get('login', 'Auth\Admin\LoginController@login')->name('admin.auth.login');
+  Route::post('login', 'Auth\Admin\LoginController@loginAdmin')->name('admin.auth.loginAdmin');
+  Route::get('logout', 'Auth\Admin\LoginController@logout')->name('admin.auth.logout');
 });
