@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,7 +27,6 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -34,6 +35,31 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:user')->except('logout');
+    }
+
+    public function showLoginForm()
+    {
+        return view('shop.auth.login');
+    }
+
+    public function login(Request $request)
+    {
+      $this->validate($request, [
+        'email'   => 'required',
+        'password' => 'required|min:6'
+      ]);
+
+      if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+        return redirect(route('shop.home'));
+      }
+
+      return redirect()->back()->withInput($request->only('email', 'remember'));
+    }
+
+    public function logout()
+    {
+        Auth::guard('user')->logout();
+        return redirect()->route('shop.auth.login');
     }
 }

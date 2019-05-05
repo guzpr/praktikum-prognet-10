@@ -9,12 +9,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','ShopController@index')->name('shop.home');
+Route::get('/product','ShopController@products');
+Route::get('/product/{slug}','ShopController@product');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('shop.auth.login');
+Route::post('/login', 'Auth\LoginController@login');
+Route::get('logout', 'Auth\LoginController@logout')->name('shop.auth.logout');
+Route::get('/cart', 'ShopController@cart')->name('shop.cart');
 
-
-Auth::routes();
 
 Route::prefix('admin')->group(function () {
   Route::get('/', function(){
