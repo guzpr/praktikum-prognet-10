@@ -49,7 +49,8 @@
         computed:{
             translateThousand(){
                     return this.product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
+            },
+           
         }
     }
 </script>

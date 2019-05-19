@@ -8,6 +8,11 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import Vuex from 'vuex';
+import Toasted from 'vue-toasted';
+Vue.use(Toasted, {
+    iconPack: 'fontawesome' // set your iconPack, defaults to material. material|fontawesome|custom-class
+})
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,9 +24,15 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
+Vue.use(Vuex)
 Vue.component('product-component', require('./components/ProductComponent.vue').default);
 Vue.component('product-show-component', require('./components/ProductShowComponent.vue').default);
+Vue.component('categories-filter-component', require('./components/CategoriesFilterComponent.vue').default);
+Vue.component('product-gallery', require('./components/ProductGallery.vue').default);
+Vue.component('nav-component', require('./components/NavComponent.vue').default);
+Vue.component('cart-component', require('./components/CartComponent.vue').default);
+
+Vue.use(Toasted)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,6 +40,24 @@ Vue.component('product-show-component', require('./components/ProductShowCompone
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ const store = new Vuex.Store({
+     state: {
+         category:null,
+         price:[]
+     },
+     mutations: {
+         assignCategory(state,category) {
+             state.category = category;
+         },
+         assignPrice(state,price){
+             state.price.length = 0;
+             state.price = price;
+         }
+     },
+     
+ })
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store,
 });

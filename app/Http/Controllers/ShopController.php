@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Master\Products;
+use App\Models\Master\ProductCategories;
 class ShopController extends Controller
 {
 
@@ -17,11 +18,7 @@ class ShopController extends Controller
     }
 
     public function products(){
-        $products = Products::with('image')->get();
-        if(sizeof($products)>0){
-            return view('shop.product')->with('data',$products);
-        }
-        return abort(404);
+        return view('shop.product');
     }
 
     public function product($slug){

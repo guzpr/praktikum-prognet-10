@@ -13,5 +13,3 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/product/{slug}','ProductController@getBySlug');
-

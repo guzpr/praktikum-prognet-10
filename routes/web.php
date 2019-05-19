@@ -18,6 +18,28 @@ Route::get('logout', 'Auth\LoginController@logout')->name('shop.auth.logout');
 Route::get('/cart', 'ShopController@cart')->name('shop.cart');
 
 
+
+Route::prefix('api')->group(function(){
+
+  Route::prefix('categories')->group(function(){
+    Route::get('/','CategoriesController@getAll');
+  });
+
+  Route::prefix('product')->group(function(){
+    Route::get('/','ProductController@getAll');
+    Route::get('/min','ProductController@getMinPrices');
+    Route::get('/max','ProductController@getMaxPrices');
+  });
+
+  Route::prefix('cart')->group(function(){
+    Route::get('/count','CartController@getCountCart');
+    Route::post('/','CartController@addCart');
+    Route::get('/','CartController@getCart');
+    Route::patch('/','CartController@update');
+    Route::delete('/','CartController@delete');
+  });
+});
+
 Route::prefix('admin')->group(function () {
   Route::get('/', function(){
     return redirect('/admin/dashboard/');
