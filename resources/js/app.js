@@ -13,7 +13,12 @@ import Toasted from 'vue-toasted';
 Vue.use(Toasted, {
     iconPack: 'fontawesome' // set your iconPack, defaults to material. material|fontawesome|custom-class
 })
+import BootstrapVue from 'bootstrap-vue'
 
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+Vue.use(BootstrapVue)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -31,6 +36,8 @@ Vue.component('categories-filter-component', require('./components/CategoriesFil
 Vue.component('product-gallery', require('./components/ProductGallery.vue').default);
 Vue.component('nav-component', require('./components/NavComponent.vue').default);
 Vue.component('cart-component', require('./components/CartComponent.vue').default);
+Vue.component('loading-component', require('./components/LoadingComponent.vue').default);
+Vue.component('checkout-component', require('./components/CheckOutComponent.vue').default);
 
 Vue.use(Toasted)
 

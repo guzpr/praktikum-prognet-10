@@ -16,6 +16,7 @@ Route::get('/login', 'Auth\LoginController@showLoginForm')->name('shop.auth.logi
 Route::post('/login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('shop.auth.logout');
 Route::get('/cart', 'ShopController@cart')->name('shop.cart');
+Route::get('/checkout', 'ShopController@checkout')->name('shop.checkout');
 
 
 
@@ -37,6 +38,16 @@ Route::prefix('api')->group(function(){
     Route::get('/','CartController@getCart');
     Route::patch('/','CartController@update');
     Route::delete('/','CartController@delete');
+  });
+
+  Route::prefix('rajaongkir')->group(function(){
+    Route::get('/province','RajaOngkirController@getProvince');
+    Route::get('/province/{id}/city','RajaOngkirController@getCityByProvinceId');
+    Route::post('/cost','RajaOngkirController@getCost');
+  });
+
+  Route::prefix('courier')->group(function(){
+    Route::get('/','CourierController@getAll');
   });
 });
 
