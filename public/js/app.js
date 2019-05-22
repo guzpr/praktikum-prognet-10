@@ -2260,12 +2260,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2279,12 +2273,14 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       courier: [],
+      courierSelected: null,
       cart: [],
       loading: true,
       province: [],
       provinceSelected: null,
       cities: [],
       citySelected: null,
+      test: null,
       form: {
         address: null,
         regency: null,
@@ -2292,11 +2288,18 @@ __webpack_require__.r(__webpack_exports__);
         total: null,
         shippingCost: null,
         subTotal: null,
-        courierId: null
+        courier: null,
+        cart: null
       },
+      packetOptions: [],
+      packetSelected: null,
+      shippingPrice: false,
       isCitiesDisabled: false,
       isCitiesLoading: false,
-      isProvinceLoading: true
+      isPacketDisabled: false,
+      isPacketLoading: false,
+      isProvinceLoading: true,
+      isGetPacket: false
     };
   },
   mounted: function mounted() {
@@ -2367,6 +2370,46 @@ __webpack_require__.r(__webpack_exports__);
         _this4.isCitiesLoading = false;
         _this4.isCitiesDisabled = false;
       });
+    },
+    formatWeight: function formatWeight(weight) {
+      if (weight < 1000) return weight + " g";else return (weight / 1000).toFixed(1) + " kg";
+    },
+    getCost: function getCost() {
+      var _this5 = this;
+
+      this.isPacketDisabled = true;
+      this.isPacketLoading = true;
+      this.packetSelected = null;
+      this.packetOptions = [];
+      var data = {
+        "destination": this.citySelected.city_id,
+        "courier": this.courierSelected.courier,
+        "weight": this.totalWeight
+      };
+      axios.post('/api/rajaongkir/cost', data).then(function (res) {
+        _this5.packetOptions = res.data.rajaongkir.results[0].costs;
+        _this5.isPacketDisabled = false;
+        _this5.isPacketLoading = false;
+      })["catch"](function (err) {
+        console.log(err.response);
+      });
+    },
+    packetName: function packetName(val) {
+      return "".concat(val.description, " (").concat(val.service, ") ").concat(this.translateThousand(val.cost[0].value));
+    },
+    postTransaction: function postTransaction() {
+      this.form.regency = this.provinceSelected.province_id;
+      this.form.city = this.citySelected.city_id;
+      this.form.shippingCost = this.packetSelected.cost[0].value;
+      this.form.courier = this.courierSelected.id;
+      this.form.subTotal = this.totalPrice + this.packetSelected.cost[0].value;
+      this.form.total = this.totalPrice;
+      this.form.cart = this.cart;
+      axios.post('/api/transaction', this.form).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.log(err.response);
+      });
     }
   },
   computed: {
@@ -2374,6 +2417,38 @@ __webpack_require__.r(__webpack_exports__);
       return this.cart.reduce(function (sum, val) {
         return sum + val.products.price * val.qty;
       }, 0);
+    },
+    shippingCost: function shippingCost() {
+      if (this.courierSelected != null && this.citySelected != null) {
+        this.isGetPacket = true;
+      } else {
+        this.isGetPacket = false;
+      }
+    },
+    isPayDisabled: function isPayDisabled() {
+      return this.courierSelected == null || this.citySelected == null || this.provinceSelected == null || this.packetSelected == null || this.form.address == null;
+    },
+    totalWeight: function totalWeight() {
+      return this.cart.reduce(function (sum, val) {
+        return sum + val.products.weight * val.qty;
+      }, 0);
+    }
+  },
+  watch: {
+    isGetPacket: {
+      handler: function handler(val) {
+        if (val == true) this.getCost();
+      }
+    },
+    courierSelected: {
+      handler: function handler(val) {
+        this.isGetPacket = false;
+      }
+    },
+    citySelected: {
+      handler: function handler(val) {
+        this.isGetPacket = false;
+      }
     }
   }
 });
@@ -68861,6 +68936,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _vm._v("\n    " + _vm._s(_vm.shippingCost) + "\n    "),
     _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "site-section" }, [
@@ -68871,187 +68947,259 @@ var render = function() {
           _vm.loading
             ? _c("div", { staticClass: "my-5" }, [_c("loading-component")], 1)
             : [
+                _c("h3", { staticClass: "my-2" }, [_vm._v("Checkout")]),
+                _vm._v(" "),
                 _vm.cart.length > 0
-                  ? _c(
-                      "div",
-                      { staticClass: "row mb-5" },
-                      [
-                        _c("div", { staticClass: "col-12" }, [
-                          _c("h3", { staticClass: "my-2" }, [
-                            _vm._v("Checkout")
-                          ]),
-                          _vm._v(" "),
+                  ? _c("div", { staticClass: "row mb-5" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col-6" },
+                        [
                           _c("h5", { staticClass: "mt-4" }, [
-                            _vm._v("Shipping Details")
+                            _vm._v("Item Details")
                           ]),
                           _vm._v(" "),
                           _c("hr"),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "row" },
-                            [
-                              _c(
-                                "b-form-group",
-                                {
-                                  staticClass: "col-12",
-                                  attrs: { label: "Address:" }
-                                },
-                                [
-                                  _c("b-form-input", {
-                                    attrs: {
-                                      id: "input-live",
-                                      placeholder: "Enter your address",
-                                      trim: ""
-                                    },
-                                    model: {
-                                      value: _vm.form.name,
-                                      callback: function($$v) {
-                                        _vm.$set(_vm.form, "name", $$v)
+                          _vm._l(_vm.cart, function(item) {
+                            return _c(
+                              "div",
+                              {
+                                key: item.id,
+                                staticClass: "col-12 my-2 rounded p-2"
+                              },
+                              [
+                                _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col-3" }, [
+                                    _c("img", {
+                                      staticStyle: {
+                                        height: "100%",
+                                        width: "100%",
+                                        "object-fit": "contain"
                                       },
-                                      expression: "form.name"
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "b-form-group",
-                                {
-                                  staticClass: "col-6",
-                                  attrs: { label: "Province:" }
-                                },
-                                [
-                                  _c("multiselect", {
-                                    attrs: {
-                                      "track-by": "province_id",
-                                      label: "province",
-                                      options: _vm.province,
-                                      "allow-empty": false,
-                                      showLabels: false,
-                                      loading: _vm.isProvinceLoading
-                                    },
-                                    on: { input: _vm.getCities },
-                                    model: {
-                                      value: _vm.provinceSelected,
-                                      callback: function($$v) {
-                                        _vm.provinceSelected = $$v
-                                      },
-                                      expression: "provinceSelected"
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "b-form-group",
-                                {
-                                  staticClass: "col-6",
-                                  attrs: { label: "City:" }
-                                },
-                                [
-                                  _c("multiselect", {
-                                    attrs: {
-                                      "track-by": "city_id",
-                                      label: "city_name",
-                                      options: _vm.cities,
-                                      disabled: _vm.isCitiesDisabled,
-                                      loading: _vm.isCitiesLoading
-                                    },
-                                    model: {
-                                      value: _vm.citySelected,
-                                      callback: function($$v) {
-                                        _vm.citySelected = $$v
-                                      },
-                                      expression: "citySelected"
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "b-form-group",
-                                {
-                                  staticClass: "col-12",
-                                  attrs: { label: "Courier : " }
-                                },
-                                [
-                                  _c(
-                                    "b-form-radio-group",
-                                    {
-                                      staticClass: "ml-3",
-                                      model: {
-                                        value: _vm.form.courierId,
-                                        callback: function($$v) {
-                                          _vm.$set(_vm.form, "courierId", $$v)
-                                        },
-                                        expression: "form.courierId"
+                                      attrs: {
+                                        src: item.products.image[0].image_name,
+                                        alt: ""
                                       }
-                                    },
-                                    _vm._l(_vm.courier, function(courier) {
-                                      return _c(
-                                        "b-form-radio",
-                                        {
-                                          key: courier.id,
-                                          staticClass: "col-3",
-                                          attrs: { value: courier }
-                                        },
-                                        [_vm._v(_vm._s(courier.courier_name))]
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-9" }, [
+                                    _c("h6", [
+                                      _vm._v(_vm._s(item.products.product_name))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "h6",
+                                      { staticStyle: { color: "#7971EA" } },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.translateThousand(
+                                              item.products.price
+                                            )
+                                          )
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("h6", { staticClass: "my-2" }, [
+                                      _vm._v(
+                                        _vm._s(item.qty) +
+                                          " item(s) : " +
+                                          _vm._s(
+                                            _vm.formatWeight(
+                                              item.qty * item.products.weight
+                                            )
+                                          )
                                       )
-                                    }),
-                                    1
-                                  )
-                                ],
-                                1
+                                    ])
+                                  ])
+                                ])
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 text-right" }, [
+                            _c("h5", [
+                              _vm._v(
+                                "Total weight : " +
+                                  _vm._s(_vm.formatWeight(_vm.totalWeight))
                               )
-                            ],
-                            1
-                          )
+                            ])
+                          ])
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-6" }, [
+                        _c("h5", { staticClass: "mt-4" }, [
+                          _vm._v("Shipping Details")
                         ]),
                         _vm._v(" "),
-                        _vm._m(1),
+                        _c("hr"),
                         _vm._v(" "),
-                        _vm._l(_vm.cart, function(product) {
-                          return _c(
-                            "div",
-                            {
-                              key: product.id,
-                              staticClass: "row my-2 rounded p-2"
-                            },
-                            [
-                              _c("div", { staticClass: "col-3" }, [
-                                _c("img", {
-                                  staticStyle: {
-                                    height: "100%",
-                                    width: "100%",
-                                    "object-fit": "contain"
-                                  },
+                        _c(
+                          "div",
+                          { staticClass: "row" },
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                staticClass: "col-12",
+                                attrs: { label: "Address* :" }
+                              },
+                              [
+                                _c("b-form-input", {
                                   attrs: {
-                                    src: product.products.image[0].image_name,
-                                    alt: ""
+                                    id: "input-live",
+                                    placeholder: "Enter your address",
+                                    trim: ""
+                                  },
+                                  model: {
+                                    value: _vm.form.address,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.form, "address", $$v)
+                                    },
+                                    expression: "form.address"
                                   }
                                 })
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col-9" }, [
-                                _vm._v(
-                                  "\n                            Some quick example text to build on the card and make up the bulk of the card's content.\n                        "
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                staticClass: "col-6",
+                                attrs: { label: "Province* :" }
+                              },
+                              [
+                                _c("multiselect", {
+                                  attrs: {
+                                    "track-by": "province_id",
+                                    label: "province",
+                                    options: _vm.province,
+                                    "allow-empty": false,
+                                    showLabels: false,
+                                    loading: _vm.isProvinceLoading
+                                  },
+                                  on: { input: _vm.getCities },
+                                  model: {
+                                    value: _vm.provinceSelected,
+                                    callback: function($$v) {
+                                      _vm.provinceSelected = $$v
+                                    },
+                                    expression: "provinceSelected"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                staticClass: "col-6",
+                                attrs: { label: "City* :" }
+                              },
+                              [
+                                _c("multiselect", {
+                                  attrs: {
+                                    "track-by": "city_id",
+                                    label: "city_name",
+                                    options: _vm.cities,
+                                    disabled: _vm.isCitiesDisabled,
+                                    loading: _vm.isCitiesLoading
+                                  },
+                                  model: {
+                                    value: _vm.citySelected,
+                                    callback: function($$v) {
+                                      _vm.citySelected = $$v
+                                    },
+                                    expression: "citySelected"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                staticClass: "col-12",
+                                attrs: { label: "Courier : " }
+                              },
+                              [
+                                _c(
+                                  "b-form-radio-group",
+                                  {
+                                    staticClass: "ml-3",
+                                    model: {
+                                      value: _vm.courierSelected,
+                                      callback: function($$v) {
+                                        _vm.courierSelected = $$v
+                                      },
+                                      expression: "courierSelected"
+                                    }
+                                  },
+                                  _vm._l(_vm.courier, function(courier) {
+                                    return _c(
+                                      "b-form-radio",
+                                      {
+                                        key: courier.id,
+                                        staticClass: "col-4",
+                                        attrs: { value: courier }
+                                      },
+                                      [_vm._v(_vm._s(courier.courier_name))]
+                                    )
+                                  }),
+                                  1
                                 )
-                              ])
-                            ]
-                          )
-                        })
-                      ],
-                      2
-                    )
-                  : _c("div", { staticClass: "row" }, [_vm._m(2)])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                staticClass: "col-12",
+                                attrs: {
+                                  label: "Packet* :",
+                                  description:
+                                    "Please select city and courier first"
+                                }
+                              },
+                              [
+                                _c("multiselect", {
+                                  attrs: {
+                                    options: _vm.packetOptions,
+                                    disabled: _vm.isPacketDisabled,
+                                    loading: _vm.isPacketLoading,
+                                    "track-by": "service",
+                                    "custom-label": _vm.packetName
+                                  },
+                                  model: {
+                                    value: _vm.packetSelected,
+                                    callback: function($$v) {
+                                      _vm.packetSelected = $$v
+                                    },
+                                    expression: "packetSelected"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  : _c("div", { staticClass: "row" }, [_vm._m(1)])
               ],
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-5" }, [
               _c("div", { staticClass: "row mb-5" }, [
                 _c("div", { staticClass: "col-md-6" }, [
                   _c(
@@ -69072,24 +69220,94 @@ var render = function() {
             ]),
             _vm._v(" "),
             _vm.cart.length > 0
-              ? _c("div", { staticClass: "col-md-6 pl-5" }, [
+              ? _c("div", { staticClass: "col-md-7 pl-5" }, [
                   _c("div", { staticClass: "row justify-content-end" }, [
                     _c("div", { staticClass: "col-md-7" }, [
-                      _vm._m(3),
+                      _vm._m(2),
                       _vm._v(" "),
                       _c("div", { staticClass: "row mb-5" }, [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6 text-right" }, [
+                          _c("strong", { staticClass: "text-black" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(_vm.translateThousand(_vm.totalPrice))
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
                         _vm._m(4),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-6 text-right" }, [
                           _c("strong", { staticClass: "text-black" }, [
                             _vm._v(
-                              _vm._s(_vm.translateThousand(_vm.totalPrice))
+                              " " +
+                                _vm._s(
+                                  _vm.translateThousand(
+                                    _vm.packetSelected
+                                      ? _vm.packetSelected.cost[0].value
+                                      : 0
+                                  )
+                                )
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(5),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6 text-right" }, [
+                          _c("strong", { staticClass: "text-black" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm.packetSelected
+                                    ? _vm.packetSelected.cost[0].etd
+                                    : "-"
+                                ) +
+                                " days"
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(6),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6 text-right my-3" }, [
+                          _c("strong", { staticClass: "text-black" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm.translateThousand(
+                                    _vm.totalPrice +
+                                      (_vm.packetSelected
+                                        ? _vm.packetSelected.cost[0].value
+                                        : 0)
+                                  )
+                                )
                             )
                           ])
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(5)
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-12" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-primary btn-lg py-3 btn-block",
+                              attrs: { disabled: _vm.isPayDisabled },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.postTransaction($event)
+                                }
+                              }
+                            },
+                            [_vm._v("Pay")]
+                          )
+                        ])
+                      ])
                     ])
                   ])
                 ])
@@ -69124,16 +69342,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12" }, [
-      _c("h5", { staticClass: "mt-4" }, [_vm._v("Item Details")]),
-      _vm._v(" "),
-      _c("hr")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-12 text-center" }, [
       _c("img", {
         attrs: { src: "/img/no_cart.svg", width: "300", height: "300", alt: "" }
@@ -69161,23 +69369,33 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-6" }, [
-      _c("span", { staticClass: "text-black" }, [_vm._v("Total")])
+      _c("span", { staticClass: "text-black" }, [_vm._v("Item total price :")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("a", { attrs: { href: "/checkout" } }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary btn-lg py-3 btn-block" },
-            [_vm._v("Proceed To Checkout")]
-          )
-        ])
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("span", { staticClass: "text-black" }, [
+        _vm._v("Shipping total cost :")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("span", { staticClass: "text-black" }, [_vm._v("Estimated time :")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6 my-3" }, [
+      _c("span", { staticClass: "text-black" }, [_vm._v("Sub Total :")])
     ])
   }
 ]

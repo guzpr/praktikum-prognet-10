@@ -49,6 +49,10 @@ Route::prefix('api')->group(function(){
   Route::prefix('courier')->group(function(){
     Route::get('/','CourierController@getAll');
   });
+
+  Route::prefix('transaction')->group(function(){
+    Route::post('/','TransactionController@submitTransaction');
+  });
 });
 
 Route::prefix('admin')->group(function () {
