@@ -27,6 +27,7 @@ Route::prefix('api')->group(function(){
   });
 
   Route::prefix('product')->group(function(){
+    
     Route::get('/','ProductController@getAll');
     Route::get('/min','ProductController@getMinPrices');
     Route::get('/max','ProductController@getMaxPrices');
@@ -59,6 +60,10 @@ Route::prefix('admin')->group(function () {
   Route::get('/', function(){
     return redirect('/admin/dashboard/');
   })->name('admin.dashboard');
+  Route::resource('/product-images', 'productImageController');
+  Route::get('/product','ProductController@index')->name('admin.product');
+  Route::get('/product/add','ProductController@create')->name('admin.add');
+  Route::post('/product/add','ProductController@store')->name('admin.add.store');
   Route::get('dashboard', 'AdminController@index')->name('admin.dashboard');
   Route::get('register', 'AdminController@create')->name('admin.register');
   Route::post('register', 'AdminController@store')->name('admin.register.store');
