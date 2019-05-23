@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Master\ProductsCategories;
+use App\Models\Master\ProductCategories;
+use App\Model\Master\Products;
+use CategoryDetail;
+use DB;
 class productCategoryController extends Controller
 {
     /**
@@ -13,9 +16,10 @@ class productCategoryController extends Controller
      */
     public function index()
     {
-        $productCategories = ProductsCategories::latest()->paginate(5);
+        $categories = DB::table('product_categories')
+        ->get();
   
-        return view('admin.category.list',compact('productCategories'));
+        return view('admin.category.list',compact('categories'));
     }
 
     /**
@@ -25,7 +29,8 @@ class productCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = ProductCategories::get();
+        return view('admin.category.add', compact('categories'));
     }
 
     /**
@@ -36,7 +41,17 @@ class productCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+
+        $categories = new ProductCategories;
+        $categories->category_name = $request->category_name;
+        $categories->created_at = date('Y-m-d H:i:s');
+        $categories->updated_at = date('Y-m-d H:i:s');
+        $categories->is_deleted = 0;
+        $categories->save();
+
+        $categories = ProductCategories::get();
+        return redirect('/admin/category');
     }
 
     /**
@@ -58,7 +73,9 @@ class productCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = ProductCategories::find($id);
+
+        return view('admin.category.edit', compact('categories'));
     }
 
     /**
@@ -70,7 +87,7 @@ class productCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -82,5 +99,13 @@ class productCategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function activate($id)
+    {
+        $products = Products::find($id);
+        $products->is_deleted = 0;
+        $products->save();
+        return redirect("/admin/product")->with("alert-success", "Berhasil Mengaktifkan product");
     }
 }

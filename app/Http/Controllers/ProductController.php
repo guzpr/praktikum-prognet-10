@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+
 use App\ProductImage;
 use App\CategoryDetail;
 use App\Models\Master\Products;
@@ -98,7 +99,7 @@ class ProductController extends Controller
                     $file->move(public_path().'/files/', $name);
 
                     $image = new ProductImage;
-                    $image->product_id = $get_id_product->id;
+                    $image->products_id = $get_id_product->id;
                     $image->image_name=$path;
                     $image->save();
                 $i++;    
@@ -107,7 +108,7 @@ class ProductController extends Controller
         }
 
         $products = Products::get();
-        return view("product.list", compact("products"));
+        return redirect('/admin/product/');
     }
 
     public function show(Product $product)
@@ -115,29 +116,54 @@ class ProductController extends Controller
         return view('products.show',compact('product'));
     }
 
-    public function edit(Product $product)
+    public function edit($id)
     {
-        return view('products.edit',compact('product'));
+        $category = ProductCategories::get();
+        $category_details = CategoryDetail::where('product_category_details.product_id',$id)->get();
+        $products = Products::find($id);
+        return view("admin.product.edit", compact("products",'category','category_details'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_produk' => 'required',
-            'harga' => 'required',
-        ]);
-  
-        $product->update($request->all());
-  
-        return redirect()->route('products.index')
-                        ->with('success','Product updated successfully');
+        $produks = Products::find($id);
+        $produks->product_name = $request->product_name;
+        $produks->price = $request->price;
+        $produks->description = $request->description;
+        // $produks->product_rate = $request->product_rate;
+        $produks->updated_at = date('Y-m-d H:i:s');
+        $produks->stock = $request->stock;
+        $produks->weight = $request->weight;
+        $produks->save();
+        foreach($request->category_id as $category){
+            $category_details = CategoryDetail::where('product_id',$id);
+            $category_details->delete();
+        }
+
+        foreach($request->category_id as $category){
+            $category_details = new CategoryDetail;
+            $category_details->product_id = $id;
+            $category_details->category_id = $category;
+            $category_details->created_at = date('Y-m-d H:i:s');
+            $category_details->updated_at = date('Y-m-d H:i:s');
+            $category_details->save();
+        }
+        return redirect("/admin/product");
     }
 
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        $product->delete();
-  
-        return redirect()->route('products.index')
-                        ->with('success','Product deleted successfully');
+        $products = Products::find($id);
+        $products->is_deleted = 1;
+        $products->save();
+        return redirect("/admin/product")->with("alert-success", "Berhasil menonaktifkan product");
+    }
+
+    public function activate($id)
+    {
+        $products = Products::find($id);
+        $products->is_deleted = 0;
+        $products->save();
+        return redirect("/admin/product")->with("alert-success", "Berhasil Mengaktifkan product");
     }
 }
