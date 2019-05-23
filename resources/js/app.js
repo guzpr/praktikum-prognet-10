@@ -15,8 +15,6 @@ Vue.use(Toasted, {
 })
 import BootstrapVue from 'bootstrap-vue'
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 Vue.use(BootstrapVue)
 /**
@@ -38,7 +36,7 @@ Vue.component('nav-component', require('./components/NavComponent.vue').default)
 Vue.component('cart-component', require('./components/CartComponent.vue').default);
 Vue.component('loading-component', require('./components/LoadingComponent.vue').default);
 Vue.component('checkout-component', require('./components/CheckOutComponent.vue').default);
-
+Vue.component('transaction-component', require('./components/TransactionComponent.vue').default)
 Vue.use(Toasted)
 
 /**

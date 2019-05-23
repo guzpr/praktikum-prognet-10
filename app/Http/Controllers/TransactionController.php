@@ -37,4 +37,9 @@ class TransactionController extends Controller
 
         }
     }
+
+    public function getAllTransaction(){
+        $trs = Transaction::where('user_id',Auth::guard('user')->id())->get();
+        return $trs;
+    }
 }

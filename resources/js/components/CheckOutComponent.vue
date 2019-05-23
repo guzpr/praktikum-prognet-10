@@ -141,7 +141,7 @@
                                         <span class="text-black">Estimated time :</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black"> {{packetSelected ? packetSelected.cost[0].etd : '-'}} days</strong>
+                                        <strong class="text-black"> {{packetSelected ? packetSelected.cost[0].etd.replace('HARI','') : '-'}} days</strong>
                                     </div>
                                     <div class="col-md-6 my-3">
                                         <span class="text-black">Sub Total :</span>
@@ -216,6 +216,7 @@ export default {
         axios.get('/api/courier').then(res=>{
             this.courier = res.data;
         });
+        this.shippingCost;
     },
     methods:{
         translateThousand(price){
@@ -309,6 +310,9 @@ export default {
             }).catch(err=>{
                 console.log(err.response)
             })
+        },
+        redirectHome(){
+            window.location.href = '/product';
         }
     },
     computed:{

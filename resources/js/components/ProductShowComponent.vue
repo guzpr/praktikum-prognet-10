@@ -1,44 +1,52 @@
 <template>
-    <div class="row mb-5">
-        <div  v-for="(product,index) in filteredProducts" :key="index" class="col-sm-6 col-lg-4 mb-4" >
-            <div class="block-4 text-center border">
-                <figure class="block-4-image">
-                <a :href="`/product/${product.slug}`"><img :src="product.image[0].image_name" alt="Image placeholder" class="img-fluid"></a>
-                </figure>
-                <div class="block-4-text p-4">
-                <h3><a :href="`${product.slug}`">{{product.product_name}}</a></h3>
-                <p class="mb-0">{{product.description}}</p>
-                <p class="text-primary font-weight-bold">Rp. {{translateThousand(product.price)}}</p>
-                <star-rating inline :star-size="25" read-only :show-rating="false" :increment="0.5" v-model="product.product_rate"></star-rating>                        
-                </div>
-                <div class="col-12 text-center mb-2">
-                    <div @click.prevent="addToCart(product)" class="btn btn-sm btn-primary">Add to Cart</div>
-                </div>
-            </div>
-            <div class="col-12">
-            </div>
-        </div>
-        
+<div>
+    <div v-if="loading">
+        <loading-component></loading-component>
     </div>
+    <div v-else class="row mb-5">
+            <div v-for="(product,index) in filteredProducts" :key="index" class="col-sm-6 col-lg-4 mb-4" >
+                <div class="block-4 text-center border">
+                    <figure class="block-4-image">
+                    <a :href="`/product/${product.slug}`"><img :src="product.image[0].image_name" alt="Image placeholder" class="img-fluid"></a>
+                    </figure>
+                    <div class="block-4-text p-4">
+                    <h3><a :href="`${product.slug}`">{{product.product_name}}</a></h3>
+                    <p class="mb-0">{{product.description}}</p>
+                    <p class="text-primary font-weight-bold">Rp. {{translateThousand(product.price)}}</p>
+                    <star-rating inline :star-size="25" read-only :show-rating="false" :increment="0.5" v-model="product.product_rate"></star-rating>                        
+                    </div>
+                    <div class="col-12 text-center mb-2">
+                        <div @click.prevent="addToCart(product)" class="btn btn-sm btn-primary">Add to Cart</div>
+                    </div>
+                </div>
+                <div class="col-12">
+                </div>
+            </div>
+    </div>
+
+</div>
 </template>
 
 <script>
 import StarRating from 'vue-star-rating'
 import { EventBus } from '../event-bus.js';
+import LoadingComponent from './LoadingComponent';
 
 export default {
     components: {
-        StarRating,
+        StarRating,LoadingComponent
     },
     data(){
         return {
             products:[],
-            rating:2.5
+            rating:2.5,
+            loading:true
         }
     },
     mounted(){
         axios.get('/api/product/').then(res=>{
             this.products = res.data;
+            this.loading = false;
         })
     },
     methods:{

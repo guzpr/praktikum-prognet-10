@@ -33,6 +33,10 @@ class ShopController extends Controller
         return view('shop.cart');
     }
 
+    public function transaction(){
+        return view('shop.transaction');
+    }
+
     public function checkout(){
         return view('shop.checkout');
     }
