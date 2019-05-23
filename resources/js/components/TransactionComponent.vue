@@ -182,7 +182,7 @@ export default {
             transaction:[],
             transactionSelected:null,
             cancelButtton:false,
-            detail:[]
+            detail:[],
         }
     },
     mounted(){
@@ -190,7 +190,6 @@ export default {
     },
     methods:{
         parseDate(date){
-            console.log(format(date,"DD MMMM YYYY"))
             return format(date,"DD MMMM YYYY")
         },
         translateThousand(price){

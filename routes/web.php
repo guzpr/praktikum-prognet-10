@@ -20,9 +20,10 @@ Route::get('logout', 'Auth\LoginController@logout')->name('shop.auth.logout');
 Route::get('/cart', 'ShopController@cart')->name('shop.cart');
 Route::get('/checkout', 'ShopController@checkout')->name('shop.checkout');
 Route::get('/transaction','ShopController@transaction')->name('sho.transaction');
+Route::get('/notification', 'ShopController@notification');
+
 Route::get('/user/verify/{token}', 'Auth\LoginController@verifyUser');
-
-
+Route::get('/test','TestNotificationController@test');
 Route::prefix('api')->group(function(){
 
   Route::prefix('categories')->group(function(){
@@ -60,6 +61,11 @@ Route::prefix('api')->group(function(){
     Route::post('/proff','TransactionController@uploadProof');
     Route::post('/{id}/confirm','TransactionController@confirmTransaction');
     Route::get('/{id}/details','TransactionController@getDetails');
+  });
+
+  Route::prefix('notification')->group(function(){
+    Route::get('/count','UserNotificationController@getUnreadCount');
+    Route::get('/','UserNotificationController@getAllUnread');
   });
 });
 

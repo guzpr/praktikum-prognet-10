@@ -40,5 +40,9 @@ class ShopController extends Controller
     public function checkout(){
         return view('shop.checkout');
     }
+
+    public function notification(){
+        return view('shop.notification');
+    }
     
 }

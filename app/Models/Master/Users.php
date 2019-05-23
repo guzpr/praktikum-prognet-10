@@ -5,10 +5,12 @@ namespace App\Models\Master;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Illuminate\Notifications\Notifiable;
 
 class Users extends Authenticatable 
 {
+
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
