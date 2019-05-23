@@ -2,7 +2,7 @@
 /*
 |--------------------------------------------------------------------------
 | Web Routes
-|--------------------------------------------------------------------------
+|-------------------x-------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
@@ -75,8 +75,37 @@ Route::prefix('admin')->group(function () {
   })->name('admin.dashboard');
   Route::resource('/product-images', 'productImageController');
   Route::get('/product','ProductController@index')->name('admin.product');
-  Route::get('/product/add','ProductController@create')->name('admin.add');
   Route::post('/product/add','ProductController@store')->name('admin.add.store');
+  Route::get('/product/add','ProductController@create')->name('admin.add');
+  Route::get('/product/{id}/edit','ProductController@edit');
+  route::put('/product/{id}', 'ProductController@update');
+  Route::delete('/product/deactivate/{id}', 'ProductController@destroy');
+  route::get('/product/{id}/activate', 'ProductController@activate'); 
+
+  route::get('/discounts', 'DiscountController@index')->name('admin.discount');
+  route::post('/discounts/add','DiscountController@store')->name('admin.discount.add.storee');
+  route::get('/discounts/add', 'DiscountController@create')->name('admin.discount.add');
+  route::get('/discounts/{id}/edit', 'DiscountController@edit');
+  route::put('/discounts/{id}', 'DiscountController@update');
+  Route::delete('/discounts/{id}', 'DiscountController@destroy');
+
+  route::get('/categories', 'CategoriesController@index')->name('admin.categories');
+  route::post('/categories/add','CategoriesController@store')->name('admin.categories.add.storee');
+  route::get('/categories/add', 'CategoriesController@create')->name('admin.categories.add');
+  route::get('/categories/{id}/edit', 'CategoriesController@edit');
+  route::put('/categories/{id}', 'CategoriesController@update');
+  Route::delete('/categories/deactivate/{id}', 'CategoriesController@destroy');
+  route::get('categories/{id}/activate', 'CategoriesController@activate');
+
+  route::get('/courier', 'CourierController@index')->name('admin.courier');
+  route::post('/courier/add','CourierController@store')->name('admin.courier.add.storee');
+  route::get('/courier/add', 'CourierController@create')->name('admin.courier.add');
+  route::get('/courier/{id}/edit', 'CourierController@edit');
+  route::put('/courier/{id}', 'CourierController@update');
+  Route::delete('/courier/deactivate/{id}', 'CourierController@destroy');
+  route::get('courier/{id}/activate', 'CourierController@activate');
+  
+  
   Route::get('dashboard', 'AdminController@index')->name('admin.dashboard');
   Route::get('register', 'AdminController@create')->name('admin.register');
   Route::post('register', 'AdminController@store')->name('admin.register.store');

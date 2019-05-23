@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="overview-wrap">
-                <h2 class="title-1 m-b-25">Earnings By Items</h2>
+                <h2 class="title-1 m-b-25">Product List</h2>
                 <a class="au-btn au-btn-icon au-btn--blue" href=" {{route('admin.add')}} ">
                         <i class="zmdi zmdi-plus"></i> add item</button>
                 </a>                        
@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @for ($i = 1; $i <= sizeof($products); $i++)c
+                       @for ($i = 1; $i <= sizeof($products); $i++)
                            <tr>
                                <td> {{ $i }} </td>
                                <td> {{$products[$i-1] ->product_name}} </td>
@@ -63,7 +63,6 @@
                                    </form>
                                </td>
                                <td>
-                                   
                                    @foreach ($productsjoin as $category)
                                        @if($category->product_id == $products[$i-1]->id)
                                        - {{$category->category_name}}
@@ -85,13 +84,36 @@
                                <td> {{$products[$i-1]->price}} </td>
                                <td> {{$products[$i-1]->product_rate}} </td>
                                <td> {{$products[$i-1]->stock}} items</td>
-                               <td> {{$products[$i-1]->Weight}} kgs</td>
+                               <td> {{$products[$i-1]->weight}} kgs</td>
                                <td>
                                    @if ($products[$i-1]-> is_deleted == 0)
                                        Active
                                     @else 
                                         Non-Active
                                    @endif
+                               </td>
+                               <td>
+                                    @if( $products[$i-1]->is_deleted == 1 )
+                                    <form action="/admin/product/{{$products[$i-1]->id}}/activate" method="GET">  
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-edit"></i> Activate
+                                        </button>
+                                    </form>
+                                    @endif
+                                    @if( $products[$i-1]->is_deleted == 0 )
+                                        <form action="/admin/product/{{$products[$i-1]->id}}/edit" method="GET">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-edit"></i> Edit
+                                            </button>
+                                        </form>
+                                        <form action="/admin/product/deactivate/{{$products[$i-1]->id}}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i> Deactivate
+                                            </button>
+                                        </form>
+                                    @endif
                                </td>
                            </tr>
                        @endfor

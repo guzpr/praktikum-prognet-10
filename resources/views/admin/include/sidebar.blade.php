@@ -33,15 +33,15 @@
                                     <i class="fas fa-chart-bar"></i>Product</a>
                             </li>
                             <li>
-                                <a href="table.html">
+                                <a href="{{route('admin.categories')}} ">
                                     <i class="fas fa-table"></i>Product Category</a>
                             </li>
                             <li>
-                                <a href="form.html">
+                                <a href="{{route('admin.discount')}}">
                                     <i class="far fa-check-square"></i>Discount</a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{route('admin.courier')}}">
                                     <i class="fas fa-calendar-alt"></i>Courier</a>
                             </li>
                         </ul>
