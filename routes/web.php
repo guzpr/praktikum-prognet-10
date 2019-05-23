@@ -13,11 +13,14 @@ Route::get('/','ShopController@index')->name('shop.home');
 Route::get('/product','ShopController@products');
 Route::get('/product/{slug}','ShopController@product');
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('shop.auth.login');
+Route::get('/register', 'Auth\LoginController@showRegisterForm')->name('shop.auth.register');
+Route::post('/register', 'Auth\LoginController@register');
 Route::post('/login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('shop.auth.logout');
 Route::get('/cart', 'ShopController@cart')->name('shop.cart');
 Route::get('/checkout', 'ShopController@checkout')->name('shop.checkout');
 Route::get('/transaction','ShopController@transaction')->name('sho.transaction');
+Route::get('/user/verify/{token}', 'Auth\LoginController@verifyUser');
 
 
 Route::prefix('api')->group(function(){
