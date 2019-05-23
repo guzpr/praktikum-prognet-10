@@ -33,7 +33,7 @@
                                     <i class="fas fa-chart-bar"></i>Product</a>
                             </li>
                             <li>
-                                <a href="table.html">
+                                <a href="/admin/category ">
                                     <i class="fas fa-table"></i>Product Category</a>
                             </li>
                             <li>

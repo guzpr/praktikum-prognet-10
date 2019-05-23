@@ -61,8 +61,13 @@ Route::prefix('admin')->group(function () {
     return redirect('/admin/dashboard/');
   })->name('admin.dashboard');
   Route::resource('/product-images', 'productImageController');
+  Route::resource('/category', 'productCategoryController');
   Route::get('/product','ProductController@index')->name('admin.product');
   Route::get('/product/add','ProductController@create')->name('admin.add');
+  Route::get('/product/{id}/edit','ProductController@edit');
+  route::put('/product/{id}', 'ProductController@update');
+  Route::delete('/product/deactivate/{id}', 'ProductController@destroy');
+  route::get('/product/{id}/activate', 'ProductController@activate');
   Route::post('/product/add','ProductController@store')->name('admin.add.store');
   Route::get('dashboard', 'AdminController@index')->name('admin.dashboard');
   Route::get('register', 'AdminController@create')->name('admin.register');

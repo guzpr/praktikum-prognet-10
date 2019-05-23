@@ -65,7 +65,7 @@ class productImageController extends Controller
         }
 
         $productImages = ProductImage::get();
-        return view("product-image.list", compact("productImages"))->with("alert-success", "Berhasil Menambahkan Data Gambar");
+        return redirect("/admin/product");
     }
 
     /**
@@ -124,6 +124,7 @@ class productImageController extends Controller
                 $i++;    
             }
         }
+        return redirect("/admin/product");
     }
 
     /**
