@@ -4,9 +4,10 @@ namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
-class Users extends Authenticatable
+class Users extends Authenticatable 
 {
     /**
      * The attributes that are mass assignable.

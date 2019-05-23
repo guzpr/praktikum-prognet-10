@@ -2413,9 +2413,9 @@ __webpack_require__.r(__webpack_exports__);
       this.form.total = this.totalPrice;
       this.form.cart = this.cart;
       axios.post('/api/transaction', this.form).then(function (res) {
-        console.log(res);
+        sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Success!", "Successfuly posting transaction. Please upload your proof of payment", "success");
       })["catch"](function (err) {
-        console.log(err.response);
+        sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Success!", "Error on posting your payment", "error");
       });
     },
     redirectHome: function redirectHome() {

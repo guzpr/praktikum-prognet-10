@@ -306,9 +306,9 @@ export default {
             this.form.total = this.totalPrice;
             this.form.cart = this.cart;
             axios.post('/api/transaction',this.form).then(res=>{
-                console.log(res);
+                swal("Success!", "Successfuly posting transaction. Please upload your proof of payment", "success");
             }).catch(err=>{
-                console.log(err.response)
+                swal("Success!", "Error on posting your payment", "error");
             })
         },
         redirectHome(){
@@ -337,7 +337,6 @@ export default {
                 return sum + val.products.weight * val.qty
             },0)
         }
-        
     },
     watch: {
         isGetPacket:{
