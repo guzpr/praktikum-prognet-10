@@ -8,7 +8,7 @@ use App\Models\Transaction\TransactionDetails;
 use Carbon\Carbon;
 use Auth;
 use App\Models\Transaction\Carts;
-
+use Storage;
 class TransactionController extends Controller
 {
     public function submitTransaction(Request $request){
@@ -41,5 +41,35 @@ class TransactionController extends Controller
     public function getAllTransaction(){
         $trs = Transaction::where('user_id',Auth::guard('user')->id())->get();
         return $trs;
+    }
+
+    public function uploadProof(Request $request){
+        $file = $request->file('file');
+        $trs = Transaction::find($request->id);
+        $diff = Carbon::parse($trs->timeout)->diffInDays(Carbon::now());
+        if( $diff > 0 ){
+            abort(404);
+        }
+        if(!empty($trs->proof_of_payment)){
+            Storage::disk('public_uploads')->delete($trs->proof_of_payment);
+        }
+        $path = Storage::disk('public_uploads')->put('',$file);
+        $trs->proof_of_payment = $path;
+        $trs->status = 'pending';
+        $trs->save(); 
+        return $path;
+    }
+
+    public function confirmTransaction($id){
+        $trs = Transaction::find($id);
+        $trs->status = 'success';
+        $trs->save(); 
+    }
+
+    public function getDetails($id){
+        return TransactionDetails::where('transaction_id',$id)
+        ->with('products')
+        ->with('products.image')
+        ->get();
     }
 }

@@ -54,6 +54,9 @@ Route::prefix('api')->group(function(){
   Route::prefix('transaction')->group(function(){
     Route::post('/','TransactionController@submitTransaction');
     Route::get('/','TransactionController@getAllTransaction');
+    Route::post('/proff','TransactionController@uploadProof');
+    Route::post('/{id}/confirm','TransactionController@confirmTransaction');
+    Route::get('/{id}/details','TransactionController@getDetails');
   });
 });
 
