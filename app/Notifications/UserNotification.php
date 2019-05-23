@@ -11,6 +11,8 @@ class UserNotification extends Notification
 {
     use Queueable;
 
+    protected $table = 'user_notification';
+
     /**
      * Create a new notification instance.
      *
