@@ -17,7 +17,7 @@
                     <strong>Basic Form</strong> Elements 
                 </div>
                 <div class="card-body card-block"> 
-                    <form action="/admin/category/{{ $categories->id }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    <form action="/admin/categories/{{ $categories->id }}" method="POST" class="form-horizontal">
                         @csrf
                         @method("PUT")
                         <div class="row form-group">

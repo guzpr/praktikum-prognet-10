@@ -10,8 +10,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="overview-wrap">
-                <h2 class="title-1 m-b-25">Product Categories</h2>
-                <a class="au-btn au-btn-icon au-btn--blue" href="{{route('admin.categories.add')}}">
+                <h2 class="title-1 m-b-25">Courier</h2>
+                <a class="au-btn au-btn-icon au-btn--blue" href="{{route('admin.courier.add')}}">
                     <i class="zmdi zmdi-plus"></i> add item</button>
                 </a>
             </div>
@@ -20,7 +20,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Product Category Name</th>
+                                    <th>Courier Name</th>
                                     <th>Date Created</th>
                                     <th>Date Updated</th>
                                     <th>Active Status</th>
@@ -28,34 +28,34 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               @for ($i = 1; $i <= sizeof($categories); $i++)
+                               @for ($i = 1; $i <= sizeof($courier); $i++)
                                    <tr>
                                        <td> {{ $i }} </td>
-                                       <td> {{$categories[$i-1] ->category_name}} </td>
-                                       <td> {{$categories[$i-1] ->created_at}} </td>
-                                       <td> {{$categories[$i-1] ->updated_at}} </td>
+                                       <td> {{$courier[$i-1] ->courier}} </td>
+                                       <td> {{$courier[$i-1] ->created_at}} </td>
+                                       <td> {{$courier[$i-1] ->updated_at}} </td>
                                        <td> 
-                                        @if( $categories[$i-1]->is_deleted == 0 )
+                                        @if( $courier[$i-1]->is_deleted == 0 )
                                             Active
                                         @else
                                             Not Active
                                         @endif
                                        </td>
                                        <td>
-                                            @if( $categories[$i-1]->is_deleted == 1 )
-                                            <form action="/admin/categories/{{$categories[$i-1]->id}}/activate" method="GET">  
+                                            @if( $courier[$i-1]->is_deleted == 1 )
+                                            <form action="/admin/courier/{{$courier[$i-1]->id}}/activate" method="GET">  
                                                 <button type="submit" class="btn btn-primary btn-sm">
                                                         <i class="fa fa-edit"></i> Activate
                                                 </button>
                                             </form>
                                             @endif
-                                            @if( $categories[$i-1]->is_deleted == 0 )
-                                                <form action="/admin/categories/{{$categories[$i-1]->id}}/edit" method="GET">
+                                            @if( $courier[$i-1]->is_deleted == 0 )
+                                                <form action="/admin/courier/{{$courier[$i-1]->id}}/edit" method="GET">
                                                     <button type="submit" class="btn btn-primary btn-sm">
                                                             <i class="fa fa-edit"></i> Edit
                                                     </button>
                                                 </form> 
-                                                <form action="/admin/categories/deactivate/{{$categories[$i-1]->id}}" method="POST">
+                                                <form action="/admin/courier/deactivate/{{$courier[$i-1]->id}}" method="POST">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">

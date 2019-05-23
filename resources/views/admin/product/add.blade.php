@@ -40,7 +40,7 @@
                                 <label for="text-input" class=" form-control-label">Product Weight</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" placeholder="Product Weight" class="form-control" name="weight">
+                                <input type="text" id="text-input" placeholder="Product Weight" class="form-control" name="weight  ">
                             </div>
                         </div>
                         <div class="row form-group">

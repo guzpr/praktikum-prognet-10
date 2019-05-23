@@ -10,21 +10,22 @@
     <div class="row">
         <div class="col-md-12">
             <div class="overview-wrap">
-                <h2 class="title-1 m-b-25">Add New Category</h2>
+                <h2 class="title-1 m-b-25">Edit courier</h2>
             </div>
             <div class="card">
                 <div class="card-header">
                     <strong>Basic Form</strong> Elements 
                 </div>
                 <div class="card-body card-block"> 
-                    <form action="/admin/categories/add" method="POST" class="form-horizontal">
+                    <form action="/admin/courier/{{ $courier->id }}" method="POST" class="form-horizontal">
                         @csrf
+                        @method("PUT")
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="text-input" class=" form-control-label">Category Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" placeholder="Product Name" class="form-control" name="category_name">
+                                <input type="text" id="text-input" placeholder="Product Name" class="form-control" name="courier" value="{{ $courier->courier }}">
                             </div>
                         </div>
                     

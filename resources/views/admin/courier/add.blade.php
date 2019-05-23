@@ -10,21 +10,21 @@
     <div class="row">
         <div class="col-md-12">
             <div class="overview-wrap">
-                <h2 class="title-1 m-b-25">Add New Category</h2>
+                <h2 class="title-1 m-b-25">Add New Courier</h2>
             </div>
             <div class="card">
                 <div class="card-header">
                     <strong>Basic Form</strong> Elements 
                 </div>
                 <div class="card-body card-block"> 
-                    <form action="/admin/categories/add" method="POST" class="form-horizontal">
+                    <form action="/admin/courier/add" method="POST" class="form-horizontal">
                         @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-input" class=" form-control-label">Category Name</label>
+                                <label for="text-input" class=" form-control-label">courier Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" placeholder="Product Name" class="form-control" name="category_name">
+                                <input type="text" id="text-input" placeholder="Product Name" class="form-control" name="courier">
                             </div>
                         </div>
                     
