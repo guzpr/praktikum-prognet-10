@@ -25,7 +25,7 @@
                         <span class="icon icon-person">
                         </span>
                         <ul class="dropdown">
-                          <li><a href="#">Profile</a></li>
+                          <li><a href="/transaction">My Transaction</a></li>
                           <li><a href="/logout">Logout</a></li>
                         </ul>
                       </li>

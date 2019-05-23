@@ -17,7 +17,7 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('shop.auth.logout');
 Route::get('/cart', 'ShopController@cart')->name('shop.cart');
 Route::get('/checkout', 'ShopController@checkout')->name('shop.checkout');
-
+Route::get('/transaction','ShopController@transaction')->name('sho.transaction');
 
 
 Route::prefix('api')->group(function(){
@@ -53,6 +53,10 @@ Route::prefix('api')->group(function(){
 
   Route::prefix('transaction')->group(function(){
     Route::post('/','TransactionController@submitTransaction');
+    Route::get('/','TransactionController@getAllTransaction');
+    Route::post('/proff','TransactionController@uploadProof');
+    Route::post('/{id}/confirm','TransactionController@confirmTransaction');
+    Route::get('/{id}/details','TransactionController@getDetails');
   });
 });
 

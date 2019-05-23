@@ -19,4 +19,8 @@ class Products extends Model
         return $this->hasMany('App\Models\Transaction\Carts','product_id','id');
     }
 
+    public function transactionDetails(){
+        return $this->hasMany('App\Models\Transaction\TransactionDetail','product_id','id');
+    }
+
 }

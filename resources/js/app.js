@@ -14,11 +14,16 @@ Vue.use(Toasted, {
     iconPack: 'fontawesome' // set your iconPack, defaults to material. material|fontawesome|custom-class
 })
 import BootstrapVue from 'bootstrap-vue'
-
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueAxios from 'vue-axios'
+import axios from 'axios'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
+import VModal from 'vue-js-modal'
+
 Vue.use(BootstrapVue)
+Vue.use(VueAxios, axios);
+
+Vue.use(VModal)
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -38,7 +43,7 @@ Vue.component('nav-component', require('./components/NavComponent.vue').default)
 Vue.component('cart-component', require('./components/CartComponent.vue').default);
 Vue.component('loading-component', require('./components/LoadingComponent.vue').default);
 Vue.component('checkout-component', require('./components/CheckOutComponent.vue').default);
-
+Vue.component('transaction-component', require('./components/TransactionComponent.vue').default)
 Vue.use(Toasted)
 
 /**

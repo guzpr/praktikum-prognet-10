@@ -6,7 +6,7 @@
   </head>
   <body>
   
-  <div class="site-wrap">
+  <div class="site-wrap" id="app">
     @include('shop.includes.navbar')
 
     <div class="site-blocks-cover" style="background-image: url(shopResource/images/hero_1.jpg);">

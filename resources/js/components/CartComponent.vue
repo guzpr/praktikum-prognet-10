@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="bg-light py-3">
-        <div class="container">
-            <div class="row">
-            <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+            <div class="container">
+                <div class="row">
+                <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+                </div>
             </div>
-        </div>
         </div>
 
         <div class="site-section">
@@ -134,13 +134,13 @@ export default {
         },
         remove(item){
             swal({
-                title: 'Peringatan!',
-                text: 'Apakah anda yakin untuk menghapus cart?',
+                title: 'Warning!',
+                text: 'Are you sure to delete this item?',
                 icon: "warning",
                 buttons: {
                     cancel: "Cancel",
                     confirm: {
-                        text: "Ya,hapus",
+                        text: "Yes,delete",
                         value: true,
                         closeModal: false,
                     }
@@ -148,6 +148,7 @@ export default {
                 dangerMode: true,
             })
             .then(val => {
+                if (!val) throw null
                 item._method = 'delete';
                 return axios.post('/api/cart',item)
             })
@@ -161,7 +162,12 @@ export default {
                 this.loadCart();
             })
             .catch(err=>{
-                console.log(err.response)
+                if (err) {
+                    swal("Error!", "Error on deleting cart", "error");
+                } else {
+                    swal.stopLoading();
+                    swal.close();
+                }
             })
         },
         loadCart(){
