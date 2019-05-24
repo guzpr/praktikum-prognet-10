@@ -38,8 +38,8 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-12 my-4 rounded p-2" v-for="review in productReview" :key="review.id">
-                      <div class="col-12">
+              <div class="col-12 my-4  p-2"  v-for="review in productReview" :key="review.id" >
+                      <div class="col-12 rounded p-2" >
                         <div class="row">
                           <div class="col-4">
                             <star-rating inline :star-size="25" read-only :show-rating="false" :increment="0.5" v-model="review.rate"></star-rating>                        
@@ -47,9 +47,19 @@
                             <h6>"{{review.content}}"</h6>
                           </div>
                         </div>
-                          <!-- <h6 style="color:#7971EA">{{translateThousand(item.products.price)}}</h6>
-                          <h6 class="my-2">{{item.qty}} item(s) : {{formatWeight(item.qty * item.products.weight) }}</h6> -->
                       </div>
+
+                      <div class="col-11 mt-2 ml-auto rounded p-2" v-if="review.response">
+                        <div class="row">
+                          <div class="col-4">
+                              <h6 class="mt-4"><span style="font-weight:700">Admin response :</span></h6>
+                              <h6>
+                                {{review.response.content}}
+                              </h6>
+                          </div>
+                        </div>
+                      </div>
+                      
               </div>
             </div>        
         <modal name="review"  :height="'auto'" :adaptive="true"  :scrollable="true">

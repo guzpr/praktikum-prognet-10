@@ -25,6 +25,6 @@ class ReviewController extends Controller
    }
 
    public function getProductReview($id){
-       return Review::where('product_id',$id)->with('user')->get();
+       return Review::where('product_id',$id)->with('user')->with('response')->get();
    }
 }

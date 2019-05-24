@@ -2721,6 +2721,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -89875,9 +89885,9 @@ var render = function() {
         _vm._l(_vm.productReview, function(review) {
           return _c(
             "div",
-            { key: review.id, staticClass: "col-12 my-4 rounded p-2" },
+            { key: review.id, staticClass: "col-12 my-4  p-2" },
             [
-              _c("div", { staticClass: "col-12" }, [
+              _c("div", { staticClass: "col-12 rounded p-2" }, [
                 _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
@@ -89912,7 +89922,29 @@ var render = function() {
                     1
                   )
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              review.response
+                ? _c(
+                    "div",
+                    { staticClass: "col-11 mt-2 ml-auto rounded p-2" },
+                    [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-4" }, [
+                          _vm._m(1, true),
+                          _vm._v(" "),
+                          _c("h6", [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(review.response.content) +
+                                "\n                          "
+                            )
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                : _vm._e()
             ]
           )
         }),
@@ -89952,6 +89984,16 @@ var staticRenderFns = [
         { staticClass: "col-md-12 site-section-heading text-center pt-4" },
         [_c("h2", [_vm._v("Products Review")])]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h6", { staticClass: "mt-4" }, [
+      _c("span", { staticStyle: { "font-weight": "700" } }, [
+        _vm._v("Admin response :")
+      ])
     ])
   }
 ]
