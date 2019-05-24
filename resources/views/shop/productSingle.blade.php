@@ -20,11 +20,6 @@
     <div class="site-section">
       <product-component  :product="{{$data}}" :review="{{$review}}"></product-component>
     </div>
-
-   
-
-    
-
         @include('shop.includes.footer')
 
   </div>

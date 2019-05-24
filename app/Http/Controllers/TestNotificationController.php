@@ -19,4 +19,14 @@ class TestNotificationController extends Controller
         Notification::send($user, new UserNotification($trsBefore,$trs));
         return $user->unreadNotifications ;
     }
+
+    public function response(){
+        $user = Auth::guard('user')->user();
+        $trs = Transaction::find(6);
+        $trsBefore = $trs->status;
+        $trs->status = 'delivered';
+        $trs->save();
+        Notification::send($user, new UserNotification($trsBefore,$trs));
+        return $user->unreadNotifications ;
+    }
 }
