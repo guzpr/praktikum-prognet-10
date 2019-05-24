@@ -16,7 +16,8 @@
                     <star-rating inline :star-size="25" read-only :show-rating="false" :increment="0.5" v-model="product.product_rate"></star-rating>                        
                     </div>
                     <div class="col-12 text-center mb-2">
-                        <div @click.prevent="addToCart(product)" class="btn btn-sm btn-primary">Add to Cart</div>
+                        <button @click.prevent="addToCart(product)" :disabled="product.stock == 0" class="btn btn-sm btn-primary">Add to Cart</button>
+                        <p v-if="product.stock==0 ">Stock empty</p>
                     </div>
                 </div>
                 <div class="col-12">
@@ -54,7 +55,7 @@ export default {
                 return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
         addToCart(product){
-            axios.post('/api/cart',{id:product.id}).then(res=>{
+            axios.post('/api/cart',{id:product.id,qty:1}).then(res=>{
                 console.log(res);
             })
             .catch(err=>{

@@ -67,6 +67,11 @@ Route::prefix('api')->group(function(){
     Route::get('/count','UserNotificationController@getUnreadCount');
     Route::get('/','UserNotificationController@getAllUnread');
   });
+
+  Route::prefix('review')->group(function(){
+    Route::post('/','ReviewController@saveReview');
+    Route::get('/product/{id}','ReviewController@getProductReview');
+  });
 });
 
 Route::prefix('admin')->group(function () {

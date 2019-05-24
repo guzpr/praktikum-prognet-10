@@ -29,7 +29,7 @@ class CartController extends Controller
             $cart = new Carts;
             $cart->user_id = Auth::guard('user')->id();
             $cart->product_id = $request->id;
-            $cart->qty = 1;
+            $cart->qty = $request->qty;
             $cart->status = 'notyet';
             $cart->save();
         }

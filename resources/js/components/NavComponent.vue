@@ -53,14 +53,7 @@
             <li>
               <a href="/">Home</a>
             </li>
-            <li class="has-children">
-              <a href="about.html">Category</a>
-              <ul class="dropdown">
-                <li v-for="(category,index) in categories" :key="index"><a href="#">{{category.category_name}}</a></li>
-              </ul>
-            </li>
             <li><a href="/product">All Product</a></li>
-            <li><a href="#">New Arrivals</a></li>
           </ul>
         </div>
       </nav>

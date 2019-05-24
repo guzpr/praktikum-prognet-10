@@ -45,6 +45,7 @@ Vue.component('loading-component', require('./components/LoadingComponent.vue').
 Vue.component('checkout-component', require('./components/CheckOutComponent.vue').default);
 Vue.component('transaction-component', require('./components/TransactionComponent.vue').default)
 Vue.component('notification-component', require('./components/NotificationComponent.vue').default)
+Vue.component('review-component', require('./components/ReviewComponent.vue').default)
 
 Vue.use(Toasted)
 

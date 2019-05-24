@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Auth;
 use App\Models\Transaction\Carts;
 use Storage;
+use App\Models\Master\Products;
 class TransactionController extends Controller
 {
     public function submitTransaction(Request $request){
@@ -34,6 +35,9 @@ class TransactionController extends Controller
             $details->save();
             $cart->status = 'checkedout';
             $cart->save();
+            $product = Products::find($request->cart[$i]['product_id']);
+            $product->stock = $product->stock - 1;
+            $product->save();
 
         }
     }
