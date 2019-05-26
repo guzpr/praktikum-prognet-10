@@ -39,6 +39,7 @@ class TransactionController extends Controller
             $details->product_id = $request->cart[$i]['product_id'];
             $details->qty = $request->cart[$i]['qty'];
             $details->selling_price = $request->cart[$i]['products']['price'] * $request->cart[$i]['qty'];
+            if(sizeof($request->cart[$i]['products']['discount']) > 0)
             $details->discount = $request->cart[$i]['products']['discount'][0]['percentage'];
             $details->save();
             $cart->status = 'checkedout';
