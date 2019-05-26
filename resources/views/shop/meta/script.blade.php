@@ -6,4 +6,4 @@
   <script src="/shopResource/js/jquery.magnific-popup.min.js"></script>
 
   <script src="/shopResource/js/main.js"></script>
-    <script src="/js/app.js"></script>
+  <script src="/js/app.js"></script>

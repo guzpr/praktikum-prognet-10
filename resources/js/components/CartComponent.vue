@@ -126,7 +126,7 @@ export default {
         }
     },
     mounted(){
-        this.loadCart()
+        this.loadCart();
     },
     methods:{
         translateThousand(price){
@@ -170,11 +170,22 @@ export default {
                 }
             })
         },
+        getDiscount(){
+            this.cart = this.cart.map(cart=>{
+                console.log(cart);
+                if(cart.products.discount.length > 0 ){
+                    cart.products.price = cart.products.price - (cart.products.price * cart.products.discount[0].percentage / 100 )
+                }
+                return cart;
+            })
+            console.log(this.cart);
+        },
         loadCart(){
             this.loading = true;
             axios.get('/api/cart').then(res=>{
                 this.cart = res.data;
                 this.loading = false;
+                this.getDiscount();
             })
         },
         redirectHome(){

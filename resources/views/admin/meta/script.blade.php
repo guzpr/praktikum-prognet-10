@@ -20,4 +20,5 @@
     </script>
 
     <!-- Main JS-->
-    <script src="/adminResource/js/main.js"></script>z8u
+    <script src="/adminResource/js/main.js"></script>
+    <script src="/js/app.js"></script>

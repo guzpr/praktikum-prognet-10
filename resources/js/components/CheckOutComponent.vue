@@ -259,6 +259,7 @@ export default {
             axios.get('/api/cart').then(res=>{
                 this.cart = res.data;
                 this.loading = false;
+                this.getDiscount();
             })
         },
         getCities(value){
@@ -306,14 +307,26 @@ export default {
             this.form.total = this.totalPrice;
             this.form.cart = this.cart;
             axios.post('/api/transaction',this.form).then(res=>{
-                swal("Success!", "Successfuly posting transaction. Please upload your proof of payment", "success");
+                console.log(res)
+                swal("Success!", "Successfuly posting transaction. Please upload your proof of payment", "success").then(_=>{
+                    window.location.href = '/transaction';
+                });
             }).catch(err=>{
-                swal("Success!", "Error on posting your payment", "error");
+                console.log(err.response);
+                swal("Error!", "Error on posting your payment", "error");
             })
         },
         redirectHome(){
             window.location.href = '/product';
-        }
+        },
+        getDiscount(){
+            this.cart = this.cart.map(cart=>{
+                if(cart.products.discount.length > 0 ){
+                    cart.products.price = cart.products.price - (cart.products.price * cart.products.discount[0].percentage / 100 )
+                }
+                return cart;
+            })
+        },
     },
     computed:{
         totalPrice(){

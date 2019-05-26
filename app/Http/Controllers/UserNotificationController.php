@@ -12,10 +12,9 @@ class UserNotificationController extends Controller
         return sizeof($user->unreadNotifications) ;
     }
 
-    public function getAllUnread(){
+    public function getAll(){
         $user = Auth::guard('user')->user();
-        $unread = $user->unreadNotifications;
-        // $user->unreadNotifications->markAsRead();
-        return $user->unreadNotifications ;
+        $user->unreadNotifications->markAsRead();
+        return $user->notifications ;
     }
 }

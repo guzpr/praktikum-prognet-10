@@ -30,6 +30,8 @@ Route::prefix('api')->group(function(){
     Route::get('/','CategoriesController@getAll');
   });
 
+  
+
   Route::prefix('product')->group(function(){
     
     Route::get('/','ProductController@getAll');
@@ -47,6 +49,7 @@ Route::prefix('api')->group(function(){
 
   Route::prefix('rajaongkir')->group(function(){
     Route::get('/province','RajaOngkirController@getProvince');
+    Route::get('/city','RajaOngkirController@getCity');
     Route::get('/province/{id}/city','RajaOngkirController@getCityByProvinceId');
     Route::post('/cost','RajaOngkirController@getCost');
   });
@@ -57,19 +60,33 @@ Route::prefix('api')->group(function(){
 
   Route::prefix('transaction')->group(function(){
     Route::post('/','TransactionController@submitTransaction');
-    Route::get('/','TransactionController@getAllTransaction');
+    Route::get('/','TransactionController@getAllTransactionByUser');
+    Route::get('/all','TransactionController@getAllTransaction');
     Route::post('/proff','TransactionController@uploadProof');
     Route::post('/{id}/confirm','TransactionController@confirmTransaction');
     Route::get('/{id}/details','TransactionController@getDetails');
+    Route::post('/changestatus','TransactionController@changeStatus');
+  });
+
+  Route::prefix('report')->group(function(){
+    Route::get('/monthly','ReportController@getReportMonthly');
+    Route::get('/','UserNotificationController@getAllUnread');
   });
 
   Route::prefix('notification')->group(function(){
     Route::get('/count','UserNotificationController@getUnreadCount');
-    Route::get('/','UserNotificationController@getAllUnread');
+    Route::get('/','UserNotificationController@getAll');
+    Route::get('/count/admin','AdminNotificationController@getUnreadCount');
+    Route::get('/admin','AdminNotificationController@getAll');
+  });
+
+  Route::prefix('response')->group(function(){
+    Route::post('/','ResponseController@postResponse');
   });
 
   Route::prefix('review')->group(function(){
     Route::post('/','ReviewController@saveReview');
+    Route::get('/','ReviewController@getAll');
     Route::get('/product/{id}','ReviewController@getProductReview');
   });
 });
@@ -109,9 +126,10 @@ Route::prefix('admin')->group(function () {
   route::put('/courier/{id}', 'CourierController@update');
   Route::delete('/courier/deactivate/{id}', 'CourierController@destroy');
   route::get('courier/{id}/activate', 'CourierController@activate');
-  
-  
+  Route::get('/response','AdminController@response')->name('admin.response');
+  Route::get('transaction', 'AdminController@transaction')->name('admin.transaction');
   Route::get('dashboard', 'AdminController@index')->name('admin.dashboard');
+  route::get('/notification', 'AdminController@notification')->name('admin.notification');
   Route::get('register', 'AdminController@create')->name('admin.register');
   Route::post('register', 'AdminController@store')->name('admin.register.store');
   Route::get('login', 'Auth\Admin\LoginController@login')->name('admin.auth.login');

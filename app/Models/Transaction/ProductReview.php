@@ -13,4 +13,8 @@ class ProductReview extends Model
     public function response(){
         return $this->hasOne('App\Models\Transaction\Response','review_id','id');
     }
+
+    public function product(){
+        return $this->belongsTo('App\Models\Master\Products');
+    }
 }

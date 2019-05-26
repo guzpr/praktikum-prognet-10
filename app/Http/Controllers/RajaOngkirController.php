@@ -38,4 +38,9 @@ class RajaOngkirController extends Controller
         return $res->getBody();
 
     }
+
+    public function getCity(){
+        $res = $this->client->request('GET', 'https://api.rajaongkir.com/starter/city');
+        return $res->getBody();
+    }
 }

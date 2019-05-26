@@ -45,7 +45,11 @@ Vue.component('loading-component', require('./components/LoadingComponent.vue').
 Vue.component('checkout-component', require('./components/CheckOutComponent.vue').default);
 Vue.component('transaction-component', require('./components/TransactionComponent.vue').default)
 Vue.component('notification-component', require('./components/NotificationComponent.vue').default)
-Vue.component('review-component', require('./components/ReviewComponent.vue').default)
+Vue.component('admin-transaction-component', require('./components/AdminTransactionComponent.vue').default)
+Vue.component('admin-dashboard-component', require('./components/AdminDashboardComponent.vue').default)
+Vue.component('admin-response-component', require('./components/AdminResponseComponent.vue').default)
+Vue.component('admin-header-component', require('./components/AdminHeaderComponent.vue').default)
+Vue.component('admin-notification-component', require('./components/AdminNotificationComponent.vue').default)
 
 Vue.use(Toasted)
 

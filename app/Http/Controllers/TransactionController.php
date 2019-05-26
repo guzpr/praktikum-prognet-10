@@ -10,6 +10,12 @@ use Auth;
 use App\Models\Transaction\Carts;
 use Storage;
 use App\Models\Master\Products;
+use App\Models\Master\Admin;
+use App\Notifications\NewTransactionNotification;
+use App\Models\Master\Users;
+use App\Notifications\TransactionStatusNotification;
+use Notification;
+
 class TransactionController extends Controller
 {
     public function submitTransaction(Request $request){
@@ -27,24 +33,30 @@ class TransactionController extends Controller
         $trs->save();
         for($i = 0 ; $i < sizeof($request->cart) ;$i++){
             $cart = Carts::find($request->cart[$i]['id']);
+            $product = Products::find($request->cart[$i]['product_id']);
             $details = new TransactionDetails;
             $details->transaction_id = $trs->id;
             $details->product_id = $request->cart[$i]['product_id'];
             $details->qty = $request->cart[$i]['qty'];
             $details->selling_price = $request->cart[$i]['products']['price'] * $request->cart[$i]['qty'];
+            $details->discount = $request->cart[$i]['products']['discount'][0]['percentage'];
             $details->save();
             $cart->status = 'checkedout';
             $cart->save();
-            $product = Products::find($request->cart[$i]['product_id']);
             $product->stock = $product->stock - 1;
             $product->save();
-
         }
+        $admin = Admin::find(1);
+        Notification::send($admin, new NewTransactionNotification($trs));
+    }
+
+    public function getAllTransactionByUser(){
+        $trs = Transaction::where('user_id',Auth::guard('user')->id())->get();
+        return $trs;
     }
 
     public function getAllTransaction(){
-        $trs = Transaction::where('user_id',Auth::guard('user')->id())->get();
-        return $trs;
+        return Transaction::with('courier')->with('user')->get();
     }
 
     public function uploadProof(Request $request){
@@ -75,5 +87,14 @@ class TransactionController extends Controller
         ->with('products')
         ->with('products.image')
         ->get();
+    }
+
+    public function changeStatus(Request $request){
+        $user = Users::find($request->user_id);
+        $trs = Transaction::find($request->transaction_id);
+        $trsBefore = $trs->status;
+        $trs->status = $request->status;
+        $trs->save();
+        Notification::send($user, new TransactionStatusNotification($trsBefore,$trs));
     }
 }

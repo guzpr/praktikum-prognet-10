@@ -16,10 +16,11 @@
                 </div>
                 <div class="row">
                     <div class="col-12 my-2" v-for="notif in notification" :key="notif.id">
-                        <div class="alert alert-primary" role="alert">
+                        <a href="/transaction"><div class="alert alert-primary" role="alert">
                             Your transaction at {{parseDate(notif.data.date)}} has changed it status from <span style="font-weight:700;text-transform:capitalize"> {{notif.data.status_before}} 
                                 </span> to <span style="font-weight:700;text-transform:capitalize"> {{notif.data.status_after}}</span>
                         </div>
+                        </a>
 
                     </div>
                 </div> 

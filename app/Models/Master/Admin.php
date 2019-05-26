@@ -5,6 +5,7 @@ namespace App\Models\Master;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Notifications\AdminNotification;
 
 class Admin extends Authenticatable
 {
@@ -25,4 +26,9 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function notifications()
+    {
+        return $this->morphMany(AdminNotification::class, 'notifiable')->orderBy('created_at', 'desc');
+    }
 }

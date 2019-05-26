@@ -18,7 +18,7 @@ class ProductController extends Controller
     }
 
     public function getAll(){
-        return Products::with('image')->with('categories')->get();
+        return Products::with('image')->with('categories')->with('discount')->get();
     }
 
     public function getMaxPrices(){

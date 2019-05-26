@@ -3,7 +3,7 @@
 namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class Products extends Model
 {
     public function image(){
@@ -21,6 +21,10 @@ class Products extends Model
 
     public function transactionDetails(){
         return $this->hasMany('App\Models\Transaction\TransactionDetail','product_id','id');
+    }
+
+    public function discount(){
+        return $this->hasMany('App\Models\Transaction\Discount','id_product','id')->whereDate('start','<=',Carbon::now())->whereDate('end','>',Carbon::now());
     }
 
 }

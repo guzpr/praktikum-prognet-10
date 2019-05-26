@@ -26,7 +26,7 @@ class ShopController extends Controller
     }
 
     public function product($slug){
-        $product = Products::where('slug',$slug)->with('image')->first();
+        $product = Products::where('slug',$slug)->with('image')->with('discount')->first();
         $isReviewed = 0;
         $productReview = Review::where('user_id',Auth::guard('user')->id())
         ->where('product_id',$product->id)
@@ -38,7 +38,7 @@ class ShopController extends Controller
         if(sizeof($productBought) > 0) {
             $isReviewed = 0;
         }
-        if(sizeof($productReview) > 0){
+        if(sizeof($productReview) > 0 || sizeof($productBought) == 0){
             $isReviewed = 1;
         };
         if($product){

@@ -12,7 +12,12 @@
                     <div class="block-4-text p-4">
                     <h3><a :href="`${product.slug}`">{{product.product_name}}</a></h3>
                     <p class="mb-0">{{product.description}}</p>
-                    <p class="text-primary font-weight-bold">Rp. {{translateThousand(product.price)}}</p>
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="text-primary font-weight-bold" :style="getDiscount(product) != product.price ? {'text-decoration': 'line-through','color':'#ADA8F1!important'} : 'text-decoration: none;'" >Rp. {{translateThousand(product.price)}}</span>
+                            <span class="text-primary font-weight-bold" style="font-size:1.3rem" v-if="getDiscount(product) != product.price">Rp. {{translateThousand(getDiscount(product))}}</span>
+                        </div>
+                    </div>
                     <star-rating inline :star-size="25" read-only :show-rating="false" :increment="0.5" v-model="product.product_rate"></star-rating>                        
                     </div>
                     <div class="col-12 text-center mb-2">
@@ -55,8 +60,9 @@ export default {
                 return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
         addToCart(product){
+            var product = product;
             axios.post('/api/cart',{id:product.id,qty:1}).then(res=>{
-                console.log(res);
+                product.stock --;
             })
             .catch(err=>{
                 console.log(err.response)
@@ -76,6 +82,13 @@ export default {
                     ]
             })
 
+        },
+        getDiscount(product){
+            var price = product.price;
+            if(product.discount.length > 0){
+                return  price = product.price - (product.price * product.discount[0].percentage / 100)
+            } 
+            return price;
         }
     },
     computed:{
@@ -92,4 +105,6 @@ export default {
 .btn:active {
   transform: translateY(4px)!important;
 }
+
+
 </style>

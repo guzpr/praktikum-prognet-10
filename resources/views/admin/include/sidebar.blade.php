@@ -3,46 +3,36 @@
             <!-- MENU SIDEBAR-->
             <aside class="menu-sidebar d-none d-lg-block">
                 <div class="logo">
-                    <a href="#">
+                    <a href="/admin">
                         <img src="/adminResource/images/icon/logo.png" alt="Cool Admin" />
                     </a>
                 </div>
                 <div class="menu-sidebar__content js-scrollbar1">
                     <nav class="navbar-sidebar">
                         <ul class="list-unstyled navbar__list">
-                            <li class="active has-sub">
-                                <a class="js-arrow" href="#">
-                                    <i class="fas fa-tachometer-alt"></i>Dashboard</a>
-                                <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                    <li>
-                                        <a href="index.html">Dashboard 1</a>
-                                    </li>
-                                    <li>
-                                        <a href="index2.html">Dashboard 2</a>
-                                    </li>
-                                    <li>
-                                        <a href="index3.html">Dashboard 3</a>
-                                    </li>
-                                    <li>
-                                        <a href="index4.html">Dashboard 4</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
+                            <li >
                                 <a href=" {{route('admin.product')}} ">
                                     <i class="fas fa-chart-bar"></i>Product</a>
                             </li>
-                            <li>
+                            <li >
                                 <a href="{{route('admin.categories')}} ">
                                     <i class="fas fa-table"></i>Product Category</a>
                             </li>
-                            <li>
+                            <li >
                                 <a href="{{route('admin.discount')}}">
                                     <i class="far fa-check-square"></i>Discount</a>
                             </li>
-                            <li>
+                            <li > 
                                 <a href="{{route('admin.courier')}}">
                                     <i class="fas fa-calendar-alt"></i>Courier</a>
+                            </li>
+                            <li >
+                                <a href="{{route('admin.transaction')}}">
+                                    <i class="fas fa-shopping-cart"></i>Transaction</a>
+                            </li>
+                            <li >
+                                <a href="{{route('admin.response')}}">
+                                    <i class="fas fa-comment"></i>Response</a>
                             </li>
                         </ul>
                     </nav>

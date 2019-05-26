@@ -42,6 +42,7 @@ class CartController extends Controller
         ->where('user_id',Auth::guard('user')->id())
         ->with('products')
         ->with('products.image')
+        ->with('products.discount')
         ->get();
     }
 

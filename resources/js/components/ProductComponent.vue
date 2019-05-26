@@ -4,14 +4,15 @@
           <div class="col-md-6">
                 <carousel :margin="20" :items="1" :autoplay="true" :nav="false">
 
-                    <img v-for="(image,index) in product.image" :key="index" :src="image.image_name" :alt="'Product Image'" class="img-fluid" />
+                    <img v-for="(image,index) in product.image" :key="index" :src="`/${image.image_name}`" :alt="'Product Image'" class="img-fluid" />
                 </carousel>
 
           </div>
           <div class="col-md-6">
             <h2 class="text-black">{{product.product_name}}</h2>
             <p>{{product.description}}</p>
-            <p><strong class="text-primary h4">Rp. {{translateThousand}}</strong></p>
+             <span class="text-primary font-weight-bold" :style="getDiscount(product) != product.price ? {'text-decoration': 'line-through','color':'#ADA8F1!important'} : 'text-decoration: none;'" >Rp. {{translateThousand(product.price)}}</span>
+            <span class="text-primary font-weight-bold" style="font-size:1.3rem" v-if="getDiscount(product) != product.price">Rp. {{translateThousand(getDiscount(product))}}</span>
             <div class="mb-5">
               <div class="input-group mb-3" style="max-width: 120px;">
               <div class="input-group-prepend">
@@ -32,7 +33,7 @@
 
           </div>
         </div>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center mt-4">
               <div class="col-md-12 site-section-heading text-center pt-4">
                 <h2>Products Review</h2>
               </div>
@@ -87,11 +88,6 @@
               productReview:[]
             }
         },
-        computed:{
-            translateThousand(){
-                    return this.product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }, 
-        },
         methods:{
           postItem(){
             axios.post('/api/cart',{id:this.product.id,qty:this.qty}).then(res=>{
@@ -100,7 +96,7 @@
             .catch(err=>{
                 console.log(err.response)
             })
-            EventBus.$emit('addCart',qty); 
+            EventBus.$emit('addCart',this.qty); 
             this.$toasted.show('Item Added to Cart! ',{
                     icon : {
                         name : 'check'
@@ -128,6 +124,16 @@
             axios.get(`/api/review/product/${this.product.id}`).then(res=>{
               this.productReview = res.data;
             })
+          },
+          translateThousand(price){
+              return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+          },
+          getDiscount(product){
+            var price = product.price;
+            if(product.discount.length > 0){
+                return  price = product.price - (product.price * product.discount[0].percentage / 100)
+            } 
+            return price;
           }
         }
     }

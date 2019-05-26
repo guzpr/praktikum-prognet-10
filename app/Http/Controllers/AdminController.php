@@ -89,4 +89,16 @@ class AdminController extends Controller
     {
         //
     }
+
+    public function transaction(){
+        return view('admin.transaction');
+    }
+
+    public function response(){
+        return view('admin.response');
+    }
+
+    public function notification(){
+        return view('admin.notification');
+    }
 }
