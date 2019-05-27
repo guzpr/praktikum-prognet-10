@@ -78,7 +78,7 @@
     import ReviewComponent from './ReviewComponent';
     export default {
         props:['product','review'],
-        components: { carousel,StarRating },
+        components: { carousel,StarRating, ReviewComponent},
         mounted() {
           this.loadReview();
         },

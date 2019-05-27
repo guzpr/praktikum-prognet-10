@@ -50,6 +50,7 @@ Vue.component('admin-dashboard-component', require('./components/AdminDashboardC
 Vue.component('admin-response-component', require('./components/AdminResponseComponent.vue').default)
 Vue.component('admin-header-component', require('./components/AdminHeaderComponent.vue').default)
 Vue.component('admin-notification-component', require('./components/AdminNotificationComponent.vue').default)
+Vue.component('review-component', require('./components/ReviewComponent.vue').default)
 
 Vue.use(Toasted)
 
