@@ -9,11 +9,11 @@
   <div class="site-wrap" id="app">
     @include('shop.includes.navbar')
 
-    <div class="site-blocks-cover" style="background-image: url(shopResource/images/hero_1.jpg);">
+    <div class="site-blocks-cover" style="background-image: url(shopResource/images/hero_12.jpg);">
       <div class="container">
         <div class="row align-items-start align-items-md-center justify-content-end">
           <div class="col-md-5 text-center text-md-left pt-5 pt-md-0">
-            <h1 class="mb-2">Finding Your Perfect Shoes</h1>
+            <h1 class="mb-2"> Scm Alat Upakara</h1>
             <div class="intro-text text-center text-md-left">
               <p>
                 <a href="/product" class="btn btn-sm btn-primary">Shop Now</a>

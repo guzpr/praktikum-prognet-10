@@ -32,7 +32,7 @@
                                         <div class="col-3">
                                             <div class="timeout" v-if="item.status == 'unverified'">
                                                 <strong><p style="color:#DF2935;font-weight:700">Time left for proof of payment upload:</p></strong>
-                                                <Countdown :deadline="parseDate(item.timeout)"></Countdown>
+                                                <Countdown :end="countdown(item.timeout)"></Countdown>
                                             </div>
                                             <div class="pending" v-if="item.status == 'pending'">
                                                 <div class="row">
@@ -170,7 +170,7 @@
 <script>
 import swal from 'sweetalert';
 import LoadingComponent from './LoadingComponent'
-import Countdown from 'vuejs-countdown'
+import Countdown from './Countdown'
 import { format } from 'date-fns'
 import UploadFileComponent from "./UploadFileComponent"
 
@@ -190,7 +190,11 @@ export default {
     },
     methods:{
         parseDate(date){
-            return format(date,"DD MMMM YYYY")
+            return format(date,"MMMM DD, YYYY")
+        },
+        countdown(date){
+            var ea = format(date,"MMMM DD, YYYY").toString();
+            return ea;
         },
         translateThousand(price){
             return `Rp ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;

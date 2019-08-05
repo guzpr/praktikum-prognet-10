@@ -20,7 +20,7 @@ class TransactionController extends Controller
 {
     public function submitTransaction(Request $request){
         $trs = new Transaction;
-        $trs->timeout = Carbon::now()->addDay();
+        $trs->timeout = Carbon::now()->addDay(2);
         $trs->address = $request->address;
         $trs->regency = $request->regency;
         $trs->city = $request->city;
